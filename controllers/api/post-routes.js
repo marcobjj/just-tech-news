@@ -29,6 +29,11 @@ router.get('/', (req, res) => {
           }
         ]
        })
+       .then(getData => res.json(getData))
+       .catch(err => {
+         console.log(err);
+         res.status(400).json(err);
+       });
   });
 
  // PUT /api/posts/upvote (has to be stated before /api/posts/:id)
