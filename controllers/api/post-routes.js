@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Post, User, Vote, Comment } = require("../../models");
+const withAuth = require('../../utils/auth');
 const sequelize = require('../../config/connection');
 
 // get all users
@@ -38,7 +39,7 @@ router.get('/', (req, res) => {
 
  // PUT /api/posts/upvote (has to be stated before /api/posts/:id)
 
-  router.put('/upvote', (req, res) => {
+  router.put('/upvote', withAuth, (req, res) => {
     // make sure the session exists first
     if (req.session) {
       // pass session id along with all destructured properties on req.body
@@ -85,7 +86,7 @@ router.get('/', (req, res) => {
     Post.create({
       title: req.body.title,
       post_url: req.body.post_url,
-      user_id: req.body.user_id
+      user_id: req.session.user_id
     })
       .then(dbPostData => res.json(dbPostData))
       .catch(err => {
